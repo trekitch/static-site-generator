@@ -1,6 +1,8 @@
 import unittest
 from inline_markdown import (
     split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_links,
 )
 
 from textnode import TextNode, TextType
@@ -85,6 +87,26 @@ class TestInlineMarkdown(unittest.TestCase):
             ],
             new_nodes,
         )
+
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+
+    def test_extract_markdown_images_mult(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another text with and ![image](https://1000logos.net/wp-content/uploads/2023/04/Git-logo.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png"), ("image", "https://1000logos.net/wp-content/uploads/2023/04/Git-logo.png")], matches)
+
+    def test_extract_markdown_links(self):
+        matches = extract_markdown_links("This is text with a link [to boot dev](https://www.boot.dev)")
+        self.assertListEqual([("to boot dev", "https://www.boot.dev")], matches)
+
+    def test_extract_markdown_links_mult(self):
+        matches = extract_markdown_links("This is text with a link [to boot dev](https://www.boot.dev) and a link [to google](https://www.google.com)")
+        self.assertListEqual([("to boot dev", "https://www.boot.dev"), ("to google", "https://www.google.com")], matches)
 
 
 if __name__ == "__main__":
