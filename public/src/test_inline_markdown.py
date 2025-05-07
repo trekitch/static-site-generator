@@ -6,6 +6,7 @@ from inline_markdown import (
     split_nodes_image,
     split_nodes_link,
     text_to_textnodes,
+    markdown_to_blocks
 )
 
 from textnode import TextNode, TextType
@@ -242,18 +243,18 @@ class TestInlineMarkdown(unittest.TestCase):
         node = text_to_textnodes(text)
         self.assertEqual(
             [
-    TextNode("This is ", TextType.TEXT),
-    TextNode("text", TextType.BOLD),
-    TextNode(" with an ", TextType.TEXT),
-    TextNode("italic", TextType.ITALIC),
-    TextNode(" word and a ", TextType.TEXT),
-    TextNode("code block", TextType.CODE),
-    TextNode(" and an ", TextType.TEXT),
-    TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-    TextNode(" and a ", TextType.TEXT),
-    TextNode("link", TextType.LINK, "https://boot.dev"),
-],
-node
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" word and a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+        ],
+        node
         )
 
     def test_text_to_textnodes_code(self):
@@ -261,14 +262,14 @@ node
         node = text_to_textnodes(text)
         self.assertEqual(
             [
-    TextNode("This is ", TextType.TEXT),
-    TextNode("code block", TextType.CODE),
-    TextNode(" and an ", TextType.TEXT),
-    TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-    TextNode(" and a ", TextType.TEXT),
-    TextNode("link", TextType.LINK, "https://boot.dev"),
-],
-node
+            TextNode("This is ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+        ],
+        node
         )
 
     def test_text_to_textnodes_bold(self):
@@ -276,14 +277,14 @@ node
         node = text_to_textnodes(text)
         self.assertEqual(
             [
-    TextNode("This is ", TextType.TEXT),
-    TextNode("text", TextType.BOLD),
-    TextNode(" and an ", TextType.TEXT),
-    TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-    TextNode(" and a ", TextType.TEXT),
-    TextNode("link", TextType.LINK, "https://boot.dev"),
-],
-node
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+        ],
+        node
         )
 
     def test_text_to_textnodes_img(self):
@@ -291,13 +292,59 @@ node
         node = text_to_textnodes(text)
         self.assertEqual(
             [
-    TextNode("This is ", TextType.TEXT),
-    TextNode("text", TextType.BOLD),
-    TextNode(" and an ", TextType.TEXT),
-    TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-],
-node
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+        ],
+        node
         )
+
+    def test_markdown_to_blocks(self):
+        markdown = """
+        This is **bolded** paragraph
+
+        This is another paragraph with _italic_ text and `code` here
+        This is the same paragraph on a new line
+
+        - This is a list
+        - with items
+        """
+
+        blocks = markdown_to_blocks(markdown)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ]
+        )
+
+
+    def test_markdown_to_blocks_newlines(self):
+        md = """
+        This is **bolded** paragraph
+
+
+
+
+        This is another paragraph with _italic_ text and `code` here
+        This is the same paragraph on a new line
+
+        - This is a list
+        - with items
+        """
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
 
 
 if __name__ == "__main__":

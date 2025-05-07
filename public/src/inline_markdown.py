@@ -81,3 +81,20 @@ def text_to_textnodes(text):
     new_nodes = split_nodes_image(new_nodes)
     new_nodes = split_nodes_link(new_nodes)
     return new_nodes
+
+def markdown_to_blocks(markdown):
+    cleaned_blocks = []
+    blocks = markdown.strip().split("\n\n")  # Split by double line breaks (paragraphs)
+
+    for block in blocks:
+        if block == "":
+            continue
+        # Clean up leading/trailing spaces from each line inside the block
+        lines = [line.strip() for line in block.strip().split("\n")]
+        cleaned_block = "\n".join(lines)
+        cleaned_blocks.append(cleaned_block)
+
+    return cleaned_blocks
+    
+
+
