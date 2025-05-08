@@ -6,7 +6,10 @@ from inline_markdown import (
     split_nodes_image,
     split_nodes_link,
     text_to_textnodes,
-    markdown_to_blocks
+    markdown_to_blocks,
+    block_to_block_type,
+    BlockType
+
 )
 
 from textnode import TextNode, TextType
@@ -344,6 +347,46 @@ class TestInlineMarkdown(unittest.TestCase):
                 "- This is a list\n- with items",
             ],
         )
+
+    def test_block_to_block_type_heading(self):
+        md = "# This is a heading"
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.HEADING)
+
+    def test_block_to_block_type_heading_2(self):
+        md = "### This is a heading"
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.HEADING)
+
+    def test_block_to_block_type_code(self):
+        md = "```This is code```"
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.CODE)
+
+    def test_block_to_block_type_quote(self):
+        md = """>this is a quote\n>quote 2\n>quote 3"""
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.QUOTE)
+
+    def test_block_to_block_type_ul(self):
+        md = """- this is a quote\n- quote 2\n- quote 3"""
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.UNORDERED_LIST)
+
+    def test_block_to_block_type_ol(self):
+        md = """1. this is a quote\n2. quote 2\n3. quote 3"""
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.ORDERED_LIST)
+
+    def test_block_to_block_type_not_ol(self):
+        md = """1. this is a quote\n1. quote 2\n3. quote 3"""
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.PARAGRAPH)
+
+    def test_block_to_block_type_not_para(self):
+        md = "This is a paragrapgh"
+        block = block_to_block_type(md)
+        self.assertEqual(block, BlockType.PARAGRAPH)
 
 
 
