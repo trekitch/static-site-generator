@@ -95,11 +95,11 @@ class TestMarkdownToHTML(unittest.TestCase):
 
     def test_paragraph(self):
         md = """
-This is **bolded** paragraph
-text in a p
-tag here
+        This is **bolded** paragraph
+        text in a p
+        tag here
 
-"""
+        """
 
         node = markdown_to_html_node(md)
         html = node.to_html()
@@ -110,13 +110,13 @@ tag here
 
     def test_paragraphs(self):
         md = """
-This is **bolded** paragraph
-text in a p
-tag here
+        This is **bolded** paragraph
+        text in a p
+        tag here
 
-This is another paragraph with _italic_ text and `code` here
+        This is another paragraph with _italic_ text and `code` here
 
-"""
+        """
 
         node = markdown_to_html_node(md)
         html = node.to_html()
@@ -127,15 +127,15 @@ This is another paragraph with _italic_ text and `code` here
 
     def test_lists(self):
         md = """
-- This is a list
-- with items
-- and _more_ items
+        - This is a list
+        - with items
+        - and _more_ items
 
-1. This is an `ordered` list
-2. with items
-3. and more items
+        1. This is an `ordered` list
+        2. with items
+        3. and more items
 
-"""
+        """
 
         node = markdown_to_html_node(md)
         html = node.to_html()
@@ -162,12 +162,12 @@ This is another paragraph with _italic_ text and `code` here
 
     def test_blockquote(self):
         md = """
-> This is a
-> blockquote block
+        > This is a
+        > blockquote block
 
-this is paragraph text
+        this is paragraph text
 
-"""
+        """
 
         node = markdown_to_html_node(md)
         html = node.to_html()
@@ -178,11 +178,11 @@ this is paragraph text
 
     def test_code(self):
         md = """
-```
-This is text that _should_ remain
-the **same** even with inline stuff
-```
-"""
+        ```
+        This is text that _should_ remain
+        the **same** even with inline stuff
+        ```
+        """
 
         node = markdown_to_html_node(md)
         html = node.to_html()
