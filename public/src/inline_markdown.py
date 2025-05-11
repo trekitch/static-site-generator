@@ -1,14 +1,7 @@
 import re
 from enum import Enum
-from textnode import TextNode, TextType
-
-class BlockType(Enum):
-    PARAGRAPH = "paragraph"
-    HEADING =  "heading"
-    CODE = "code"
-    QUOTE = "quote"
-    UNORDERED_LIST = "unordered_list"
-    ORDERED_LIST = "ordered_list"
+from textnode import TextNode, TextType, text_node_to_html_node
+from htmlnode import ParentNode
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -90,39 +83,6 @@ def text_to_textnodes(text):
     new_nodes = split_nodes_image(new_nodes)
     new_nodes = split_nodes_link(new_nodes)
     return new_nodes
-
-def markdown_to_blocks(markdown):
-    cleaned_blocks = []
-    blocks = markdown.strip().split("\n\n")  # Split by double line breaks (paragraphs)
-
-    for block in blocks:
-        if block == "":
-            continue
-        # Clean up leading/trailing spaces from each line inside the block
-        lines = [line.strip() for line in block.strip().split("\n")]
-        cleaned_block = "\n".join(lines)
-        cleaned_blocks.append(cleaned_block)
-
-    return cleaned_blocks
-
-def block_to_block_type(text):
-    lines = text.split("\n")
-    if text.startswith("```") and text.endswith("```"):
-        return BlockType.CODE
-    if re.search(r"^#{1,6} .+", text):
-        return BlockType.HEADING
-    
-    if all(line.startswith(">") for line in lines):
-        return BlockType.QUOTE
-    
-    if all(line.startswith("- ") for line in lines):
-        return BlockType.UNORDERED_LIST
-    
-    if all(line.startswith(f"{idx}. ") for idx, line in enumerate(lines, start=1)):
-        return BlockType.ORDERED_LIST
-
-    return BlockType.PARAGRAPH
-    
             
 
 
