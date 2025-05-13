@@ -9,7 +9,7 @@ from generatepage import generate_page,generate_pages_recursive
 if len(sys.argv) > 1:
     basepath = sys.argv[1]
 else:
-    basepath = "/"
+    basepath = "./"
 
 static_path = "./static"
 dest_path = "./docs"
