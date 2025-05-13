@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from markdownnode import markdown_to_html_node
 
 
@@ -29,6 +30,21 @@ def generate_page(from_path, template_path, dest_path):
         os.makedirs(dest_dir_path, exist_ok=True)
     to_file = open(dest_path, "w")
     to_file.write(temp_file_html)
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    os.makedirs(dest_dir_path, exist_ok=True)
+    content_dir = os.listdir(dir_path_content)
+    for item in content_dir:
+        # make paths for copying
+        content_path = os.path.join(dir_path_content, item)
+        print(f"Content path: {content_path}")
+        dest_path = os.path.join(dest_dir_path, item)
+        if os.path.isfile(content_path) and Path(content_path).suffix == ".md":       
+            html_filename = Path(item).stem + ".html"
+            html_dest_path = os.path.join(dest_dir_path, html_filename)
+            generate_page(content_path, template_path, html_dest_path)
+        elif os.path.isdir(content_path):
+            generate_pages_recursive(content_path, template_path, dest_path)
 
     
     

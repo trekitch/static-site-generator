@@ -21,5 +21,4 @@ def copy_files(src, dest):
             print(f"Copied file: {source_path} to {dest_path}")
         else:
             # If it's a directory, recursively copy it
-            # TODO: Implement recursive call here
             copy_files(source_path, dest_path)

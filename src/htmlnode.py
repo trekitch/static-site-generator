@@ -13,7 +13,7 @@ class HTMLNode:
             return ""
         ouput = ""
         for k, v in self.props.items():
-            ouput += f' {k}: "{v}"'
+            ouput += f' {k}="{v}"'
         return ouput
     
     def __repr__(self):

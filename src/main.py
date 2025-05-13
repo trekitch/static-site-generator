@@ -2,7 +2,7 @@ import os
 import shutil
 
 from copystaticfiles import copy_files
-from generatepage import generate_page
+from generatepage import generate_page,generate_pages_recursive
 
 static_path = "./static"
 dest_path = "./public"
@@ -17,10 +17,10 @@ def main():
     copy_files("./static", "./public")
 
     print("Generating page...")
-    generate_page(
-        os.path.join(content_path, "index.md"),
+    generate_pages_recursive(
+        os.path.join(content_path),
         template_path,
-        os.path.join(dest_path, "index.html"),
+        os.path.join(dest_path),
     )
 
 if __name__ == "__main__":
